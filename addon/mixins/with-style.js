@@ -5,6 +5,7 @@ var computed = Ember.computed;
 var required = Ember.required;
 var observer = Ember.observer;
 var on = Ember.on;
+var htmlSafe = Ember.String.htmlSafe;
 
 /**
  * @mixin WithStyleMixin
@@ -70,7 +71,7 @@ var WithStyleMixin = Ember.Mixin.create({
    * @type String
    */
   style: computed(function () {
-    return this.get('styleBindingsMeta').getStyle();
+    return htmlSafe(this.get('styleBindingsMeta').getStyle());
   }),
 
   /**

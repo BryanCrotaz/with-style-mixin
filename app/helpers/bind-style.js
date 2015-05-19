@@ -35,7 +35,7 @@ function bindStyle(/*binding1, binding2, ..., options*/) {
   var bindings = [].slice.call(arguments);
   var options = bindings.pop();
   var view = options.data.view;
-  var bindingsMeta = new StyleBindingsMeta(this, bindings);
+  var bindingsMeta = new StyleBindingsMeta(view, bindings);
   var id = ++uuid;
   // listen for changes
   bindingsMeta.addListener(function () {

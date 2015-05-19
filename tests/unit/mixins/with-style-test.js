@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {module, test} from 'qunit';
 import WithStyleMixin from 'with-style-mixin/mixins/with-style';
 
 var WithStyleView;
@@ -14,10 +15,10 @@ function render(view) {
 }
 
 module('WithStyleMixin', {
-  setup:    function () {
+  beforeEach:    function () {
     WithStyleView = Ember.View.extend(WithStyleMixin);
   },
-  teardown: function () {
+  afterEach: function () {
     Ember.run(function () {
       Ember.tryInvoke(containerView, 'destroy');
     });
@@ -26,7 +27,7 @@ module('WithStyleMixin', {
   }
 });
 
-test('it renders bare properties ignoring undefined/null/""', function () {
+test('it renders bare properties ignoring undefined/null/""', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['width', 'margin', 'display', 'color'],
     width:         '10px',
@@ -35,11 +36,11 @@ test('it renders bare properties ignoring undefined/null/""', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'width: 10px; display: none;');
+    assert.strictEqual(subject.$().attr('style'), 'width:10px;display:none;');
   });
 });
 
-test('it renders mapped properties ignoring undefined/null/""', function () {
+test('it renders mapped properties ignoring undefined/null/""', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['myWidth:width', 'myMargin:margin', 'myDisplay:display', 'myColor:color'],
     myWidth:       '10px',
@@ -48,11 +49,11 @@ test('it renders mapped properties ignoring undefined/null/""', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'width: 10px; display: none;');
+    assert.strictEqual(subject.$().attr('style'), 'width:10px;display:none;');
   });
 });
 
-test('it renders properties with unit', function () {
+test('it renders properties with unit', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['width[px]', 'margin[pt]'],
     width:         10,
@@ -60,11 +61,11 @@ test('it renders properties with unit', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'width: 10px; margin: 5pt;');
+    assert.strictEqual(subject.$().attr('style'), 'width:10px;margin:5pt;');
   });
 });
 
-test('it renders properties with negative numbers and unit', function () {
+test('it renders properties with negative numbers and unit', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['width[px]', 'margin[pt]'],
     width:         -10,
@@ -72,11 +73,11 @@ test('it renders properties with negative numbers and unit', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'width: -10px; margin: -5pt;');
+    assert.strictEqual(subject.$().attr('style'), 'width:-10px;margin:-5pt;');
   });
 });
 
-test('it ignores unit when the value is 0 or is not a number', function () {
+test('it ignores unit when the value is 0 or is not a number', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['width[px]', 'margin[pt]'],
     width:         '50%',
@@ -84,11 +85,11 @@ test('it ignores unit when the value is 0 or is not a number', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'width: 50%; margin: 0;');
+    assert.strictEqual(subject.$().attr('style'), 'width:50%;margin:0;');
   });
 });
 
-test('it renders properties with unit and mapping', function () {
+test('it renders properties with unit and mapping', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['myWidth:width[em]', 'myMargin:margin[pt]', 'myHeight:height[%]'],
     myWidth:       '10px',
@@ -97,11 +98,11 @@ test('it renders properties with unit and mapping', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'width: 10px; margin: 0; height: 30%;');
+    assert.strictEqual(subject.$().attr('style'), 'width:10px;margin:0;height:30%;');
   });
 });
 
-test('it renders properties with ternary operator', function () {
+test('it renders properties with ternary operator', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['display?:none', 'visibility?visible:', 'overflow?visible:hidden'],
     display:       true,
@@ -110,7 +111,7 @@ test('it renders properties with ternary operator', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'visibility: visible; overflow: visible;');
+    assert.strictEqual(subject.$().attr('style'), 'visibility:visible;overflow:visible;');
     subject.setProperties({
       display:    false,
       visibility: false,
@@ -118,11 +119,11 @@ test('it renders properties with ternary operator', function () {
     });
   });
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'display: none; overflow: hidden;');
+    assert.strictEqual(subject.$().attr('style'), 'display:none;overflow:hidden;');
   });
 });
 
-test('it renders properties with ternary operator and mapping', function () {
+test('it renders properties with ternary operator and mapping', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['disp:display?:none', 'vis:visibility?visible:', 'over:overflow?visible:hidden'],
     disp:          true,
@@ -131,7 +132,7 @@ test('it renders properties with ternary operator and mapping', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'visibility: visible; overflow: visible;');
+    assert.strictEqual(subject.$().attr('style'), 'visibility:visible;overflow:visible;');
     subject.setProperties({
       disp: false,
       vis:  false,
@@ -139,11 +140,11 @@ test('it renders properties with ternary operator and mapping', function () {
     });
   });
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'display: none; overflow: hidden;');
+    assert.strictEqual(subject.$().attr('style'), 'display:none;overflow:hidden;');
   });
 });
 
-test('it renders properties with ternary operator and units', function () {
+test('it renders properties with ternary operator and units', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['width[px]?:10', 'height[%]?50:', 'padding[em]?10:0'],
     width:         true,
@@ -152,7 +153,7 @@ test('it renders properties with ternary operator and units', function () {
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'height: 50%; padding: 10em;');
+    assert.strictEqual(subject.$().attr('style'), 'height:50%;padding:10em;');
     subject.setProperties({
       width:   false,
       height:  false,
@@ -160,11 +161,11 @@ test('it renders properties with ternary operator and units', function () {
     });
   });
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'width: 10px; padding: 0;');
+    assert.strictEqual(subject.$().attr('style'), 'width:10px;padding:0;');
   });
 });
 
-test('it renders properties with ternary operator, mapping and units', function () {
+test('it renders properties with ternary operator, mapping and units', function(assert) {
   var subject = WithStyleView.create({
     styleBindings: ['w:width[px]?:100', 'h:height[%]?50:', 'pad:padding[em]?10:0'],
     w:             true,
@@ -173,7 +174,7 @@ test('it renders properties with ternary operator, mapping and units', function 
   });
   render(subject);
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'height: 50%; padding: 10em;');
+    assert.strictEqual(subject.$().attr('style'), 'height:50%;padding:10em;');
     subject.setProperties({
       w:   false,
       h:   false,
@@ -181,6 +182,6 @@ test('it renders properties with ternary operator, mapping and units', function 
     });
   });
   Ember.run(function () {
-    strictEqual(subject.$().attr('style'), 'width: 100px; padding: 0;');
+    assert.strictEqual(subject.$().attr('style'), 'width:100px;padding:0;');
   });
 });

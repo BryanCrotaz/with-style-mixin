@@ -54,7 +54,7 @@ function computeStyleProperty(cssProp, value, yesNo, unit) {
   if (value !== undefined && value !== null && value !== '') {
     value = '' + value;
     unit = (unit && value !== '0' && !isNaN(value)) ? unit : '';
-    return cssProp + ': ' + value + unit + ';';
+    return cssProp + ':' + value + unit + ';';
   }
   else {
     return null;
@@ -275,7 +275,7 @@ StyleBindingsMeta.prototype.getStyle = function () {
       );
     }
     if (val !== null) {
-      buffer += buffer ? ' ' + val : val;
+      buffer += buffer ? '' + val : val;
     }
   }
   return (this.cachedStyle = buffer);
