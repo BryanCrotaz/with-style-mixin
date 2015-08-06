@@ -59,7 +59,7 @@ var WithStyleMixin = Ember.Mixin.create({
    * @type StyleBindingsMeta
    */
   styleBindingsMeta: computed({
-    get(key) {
+    get(/*key*/) {
       return new StyleBindingsMeta(this);
     }
   }),
@@ -69,7 +69,7 @@ var WithStyleMixin = Ember.Mixin.create({
    * @type String
    */
   style: computed({
-    get(key) {
+    get(/*key*/) {
       return this.get('styleBindingsMeta').getStyle();
     }
   }),
