@@ -3,6 +3,7 @@ import Ember from 'ember';
 var get = Ember.get;
 var addObserver = Ember.addObserver;
 var removeObserver = Ember.removeObserver;
+var Handlebars = Ember.Handlebars;
 var warn = Ember.warn;
 var run = Ember.run;
 var once = run.once;
@@ -52,6 +53,9 @@ function computeStyleProperty(cssProp, value, yesNo, unit) {
     }
   }
   if (value !== undefined && value !== null && value !== '') {
+    if (!isNumeric(value) && !(value instanceof Handlebars.SafeString)) {
+      value = Handlebars.Utils.escapeExpression(value);
+    }
     value = '' + value;
     unit = (unit && value !== '0' && !isNaN(value)) ? unit : '';
     return cssProp + ': ' + value + unit + ';';
@@ -59,6 +63,17 @@ function computeStyleProperty(cssProp, value, yesNo, unit) {
   else {
     return null;
   }
+}
+
+/**
+ * Given a value returns true if it is a number
+ *
+ * @method isNumeric
+ * @param {Object} value
+ * @returns {Boolean}
+ */
+function isNumeric(value) {
+  return !isNaN(parseFloat(value)) && isFinite(value);
 }
 
 /**
@@ -278,7 +293,7 @@ StyleBindingsMeta.prototype.getStyle = function () {
       buffer += buffer ? ' ' + val : val;
     }
   }
-  return (this.cachedStyle = buffer);
+  return new Handlebars.SafeString(this.cachedStyle = buffer);
 };
 
 /**
