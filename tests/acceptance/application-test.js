@@ -39,3 +39,19 @@ test('{{bind-style...}}', function () {
     strictEqual(styleOf('#test1'), 'width: 400px; margin: -20pt; margin-top: 3px;');
   });
 });
+
+test('escape injection without SafeString', function () {
+  visit('/test');
+
+  andThen(function () {
+    strictEqual(styleOf('#test3'), 'background-color: url(&quot;javascript:alert(&#x27;XSS&#x27;)&quot;);');
+  });
+});
+
+test('do not escape injection marked with SafeString', function () {
+  visit('/test');
+
+  andThen(function () {
+    strictEqual(styleOf('#test4'), 'color: url("javascript:alert(\'XSS\')");');
+  });
+});

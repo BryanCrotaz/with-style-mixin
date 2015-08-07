@@ -58,20 +58,16 @@ var WithStyleMixin = Ember.Mixin.create({
    * @property styleBindingsMeta
    * @type StyleBindingsMeta
    */
-  styleBindingsMeta: computed({
-    get(/*key*/) {
-      return new StyleBindingsMeta(this);
-    }
+  styleBindingsMeta: computed(function(/*key, value*/) {
+    return new StyleBindingsMeta(this);
   }),
 
   /**
    * @property style
    * @type String
    */
-  style: computed({
-    get(/*key*/) {
-      return this.get('styleBindingsMeta').getStyle();
-    }
+  style: computed(function(/*key, value*/) {
+    return this.get('styleBindingsMeta').getStyle();
   }),
 
   /**

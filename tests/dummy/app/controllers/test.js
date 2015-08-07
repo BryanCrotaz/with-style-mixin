@@ -6,5 +6,7 @@ export default Ember.Controller.extend({
   margin:    '10px',
   marginTop: '1',
   isShown:   true,
-  isLarge:   false
+  isLarge:   false,
+  backgroundColor: 'url("javascript:alert(\'XSS\')")',
+  color: new Ember.Handlebars.SafeString('url("javascript:alert(\'XSS\')")')
 });
