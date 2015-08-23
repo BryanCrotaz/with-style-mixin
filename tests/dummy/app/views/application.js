@@ -10,7 +10,7 @@ export default Ember.View.extend(WithStyleMixin, {
 
   bgColor: 'inherit',
 
-  initHljs: function () {
+  initHljs: Ember.on('didInsertElement', function () {
     if (typeof hljs === 'undefined') {
       return;
     }
@@ -19,5 +19,5 @@ export default Ember.View.extend(WithStyleMixin, {
         hljs.highlightBlock(block);
       });
     });
-  }.on('didInsertElement')
+  })
 });
